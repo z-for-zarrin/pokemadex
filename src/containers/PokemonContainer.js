@@ -12,7 +12,6 @@ const PokemonContainer = () => {
     const fetchPokemon = async () => {
         const response = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=1302")
         const pokemonData = await response.json();
-        console.log(pokemonData);
         const urlObjects = pokemonData.results;
         const pokemonRequests = urlObjects.map(async urlObject => {
             const pokemonResponse = await fetch(urlObject.url);
@@ -26,19 +25,31 @@ const PokemonContainer = () => {
     const fetchPokemonSpecies = async () => {
         const response = await fetch("https://pokeapi.co/api/v2/pokemon-species/?limit=1025")
         const speciesData = await response.json();
-        setPokemonSpecies(speciesData); 
+        const urlObjects = speciesData.results;
+        const speciesRequests = urlObjects.map(async urlObject => {
+            const speciesResponse = await fetch(urlObject.url);
+            return await speciesResponse.json();
+        });
+        const speciesInfo = await Promise.all(speciesRequests);
+        setPokemonSpecies(speciesInfo); 
     }
 
     const fetchGenerations = async () => {
         const response = await fetch("https://pokeapi.co/api/v2/generation")
-        const generationData = await response.json();
-        setGenerations(generationData);
+        const generationsData = await response.json();
+        const urlObjects = generationsData.results;
+        const generationsRequests = urlObjects.map(async urlObject => {
+            const generationsResponse = await fetch(urlObject.url);
+            return await generationsResponse.json();
+        });
+        const generationsInfo = await Promise.all(generationsRequests);
+        setGenerations(generationsInfo);
     }
 
     useEffect (() => {
         fetchPokemon();
-        fetchPokemonSpecies();
-        fetchGenerations();
+        // fetchPokemonSpecies();
+        // fetchGenerations();
     }, [])
 
     // TODO: RouterProvider
@@ -46,7 +57,7 @@ const PokemonContainer = () => {
     return (
         <>
         <p> Piplup 🐧</p>
-        {/* <Pokemon pokemon={pokemon} pokemonSpecies={pokemonSpecies}/> */}
+        <PokemonList pokemon={pokemon}/>
         </>
     );
     

@@ -1,16 +1,19 @@
 import Pokemon from "./Pokemon";
-import React, { useState } from 'react';
 
 
-const PokemonList = ({ pokemon, pokemonSpecies, generations }) => {
+const PokemonList = ({ pokemon }) => {
 
+    const mappedPokemon = pokemon.map((pokeman) => {
+        return <Pokemon key={pokeman.id} pokemon={pokeman}/>
+    })
     
     return (
         <>
         <h2>List of Pokémon</h2>
         <hr/>
-        {/* <div className = "pokemonList">
-            {mappedPokemon} */}
+        <div className = "pokemonList">
+            {mappedPokemon}
+        </div>
         </>
     );
 }
